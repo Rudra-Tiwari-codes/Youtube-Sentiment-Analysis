@@ -25,13 +25,12 @@ def get_logger(name: str = __name__):
     # Remove default logger
     logger.remove()
     
-    # Get configuration from environment
     log_level = os.getenv('LOG_LEVEL', 'INFO')
     log_file_path = os.getenv('LOG_FILE_PATH', './logs/sentiment_analysis.log')
     enable_console = os.getenv('ENABLE_CONSOLE_LOGGING', 'true').lower() == 'true'
     enable_file = os.getenv('ENABLE_FILE_LOGGING', 'true').lower() == 'true'
     
-    # Create logs directory if it doesn't exist
+    # Create logs director
     Path(log_file_path).parent.mkdir(parents=True, exist_ok=True)
     
     # Console logging format
@@ -42,7 +41,7 @@ def get_logger(name: str = __name__):
         "<level>{message}</level>"
     )
     
-    # File logging format (more detailed)
+    # File logging format
     file_format = (
         "{time:YYYY-MM-DD HH:mm:ss.SSS} | "
         "{level: <8} | "
@@ -50,7 +49,7 @@ def get_logger(name: str = __name__):
         "{message}"
     )
     
-    # Add console handler
+    #  console handler
     if enable_console:
         logger.add(
             sys.stdout,
@@ -61,7 +60,7 @@ def get_logger(name: str = __name__):
             diagnose=True
         )
     
-    # Add file handler
+    # file handler
     if enable_file:
         logger.add(
             log_file_path,
@@ -82,7 +81,7 @@ default_logger = get_logger()
 
 
 if __name__ == "__main__":
-    # Test the logger
+    # Testing
     test_logger = get_logger(__name__)
     
     test_logger.info("This is an info message")
