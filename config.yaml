@@ -1,0 +1,135 @@
+# Project Metadata
+project:
+  name: "Youtube Sentiment Analysis - Indian Employment"
+  version: "0.1.0"
+  description: "Advanced Sentiment Dynamics on Indian Employment Discourse"
+  author: "Rudra Tiwari"
+
+data:
+  raw_data_path: "data/raw/"
+  processed_data_path: "data/processed/"
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  max_sequence_length: 512
+  language_types: ["English", "Hindi", "Code-Mixed"]  # Hinglish handling
+
+model:
+  model_name: "distilbert-base-uncased"  
+  num_labels: 2  # Binary sentiment
+  dropout: 0.1
+  
+  alternatives:
+    multilingual: "bert-base-multilingual-cased"
+    indic: "ai4bharat/indic-bert"  #  Hindi/Hinglish
+    muril: "google/muril-base-cased"  # Multilingual Representations for Indian Languages
+
+# Training Hyperparameters
+training:
+  batch_size: 16
+  learning_rate: 2.0e-5
+  num_epochs: 5
+  weight_decay: 0.01
+  warmup_steps: 500
+  gradient_accumulation_steps: 2
+  
+  # Early Stopping
+  early_stopping:
+    enabled: true
+    patience: 3
+    monitor: "val_loss"
+    mode: "min"
+  
+  # Optimizer
+  optimizer: "adamw"
+  scheduler: "linear"
+  
+  # Mixed Precision Training
+  fp16: false  # true only if GPU speedup
+
+# Evaluation Settings
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1", "auc_roc"]
+  confusion_matrix: true
+  error_analysis: true
+  top_k_errors: 10  # Analyze top K confident wrong predictions
+
+# Explainability (XAI)
+explainability:
+  enabled: true
+  method: "shap"  # Options: shap, lime, attention
+  num_samples: 100  # Number of samples for SHAP analysis
+  waterfall_plots: true
+
+# Data Version Control
+dvc:
+  remote_storage: "s3"  # Options: s3, gdrive, azure, local
+  bucket_name: "youtube-sentiment-analysis-data"  # Update with your bucket
+  data_file: "data/raw/youtube_comments_126k.csv"
+
+# Experiment Tracking
+experiment_tracking:
+  enabled: true
+  backend: "wandb"  # Options: wandb, mlflow
+  project_name: "youtube-sentiment-analysis"
+  entity: "rudratiwari"
+  
+  # MLFlow Settings (if using mlflow)
+  mlflow:
+    tracking_uri: "http://localhost:5000"
+    experiment_name: "youtube-sentiment-analysis-experiments"
+
+# FASTAPI Settings
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  reload: false  #  true for development
+  model_path: "models/checkpoints/best_model.pt"
+  max_inference_time: 2.0  # seconds
+
+# Logging
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR...DEPENDing on severity
+  log_dir: "logs/"
+  log_file: "youtube_sentiment_analysis.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Seed for Reproducibility
+random_state: 42
+seed: 42
+
+# Paths
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  models: "models"
+  logs: "logs"
+  figures: "phase2_baseline_models/figures"
+
+# Baseline Models (Phase 2)
+models:
+  tfidf:
+    max_features: 10000
+    ngram_range: [1, 3]  # unigrams, bigrams, trigrams
+    min_df: 5
+    max_df: 0.95
+  
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+    solver: "lbfgs"
+  
+  word2vec:
+    vector_size: 300
+    window: 5
+    min_count: 5
+    workers: 4
+    epochs: 10
+    sg: 0  # 0 = CBOW, 1 = Skip-gram
+
+# Compute Resources
+compute:
+  device: "cuda"  # Options: cuda, cpu, mps (for Apple Silicon)
+  num_workers: 4  # DataLoader workers
+  pin_memory: true
