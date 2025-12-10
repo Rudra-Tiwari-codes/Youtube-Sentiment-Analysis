@@ -44,7 +44,6 @@ class DatabaseManager:
         conn = self.get_connection()
         cursor = conn.cursor()
         
-        # Raw posts table - stores all collected data
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS raw_posts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,7 +69,7 @@ class DatabaseManager:
             )
         ''')
         
-        # Processed posts table - stores analysis results
+        # Processed posts table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS processed_posts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -135,11 +134,9 @@ class DatabaseManager:
     def insert_post(self, source: str, post_data: Dict) -> Optional[int]:
         """
         Insert a post into the database
-        
         Args:
             source: Data source (youtube, twitter, news, etc.)
             post_data: Dictionary containing post data
-            
         Returns:
             ID of inserted post or None if duplicate
         """
@@ -151,7 +148,6 @@ class DatabaseManager:
             try:
                 conn = self.get_connection()
                 cursor = conn.cursor()
-                
                 cursor.execute('''
                     INSERT INTO raw_posts (
                         source, post_id, text, author, created_date, url,
@@ -193,13 +189,11 @@ class DatabaseManager:
     def insert_batch(self, source: str, posts: List[Dict]) -> Tuple[int, int]:
         """
         Insert multiple posts at once
-        
         Returns:
             Tuple of (successful_inserts, duplicates)
         """
         successful = 0
         duplicates = 0
-        
         for post in posts:
             result = self.insert_post(source, post)
             if result:
