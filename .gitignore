@@ -54,16 +54,22 @@ venv.bak/
 *.ipynb_checkpoints/
 .jupyter/
 
+# Model artifacts - exclude large checkpoints but keep trained models
 models/saved_models/
 models/checkpoints/*.pt
 models/checkpoints/*.pth
 models/checkpoints/*.bin
 models/checkpoints/*.safetensors
-*.pkl
+phase3_transformer_models/checkpoints/*.pt
+phase3_transformer_models/checkpoints/*.bin
+phase3_transformer_models/checkpoints/*.safetensors
+!phase3_transformer_models/checkpoints/**/*.ipynb
 *.h5
 *.onnx
-*.pickle
-*.joblib
+
+# Keep Phase 2 classical ML models (small, < 100MB)
+!models/*.pkl
+!models/*.joblib
 
 .dvc/cache/
 .dvc/tmp/
