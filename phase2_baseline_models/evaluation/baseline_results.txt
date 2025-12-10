@@ -1,0 +1,28 @@
+TF-IDF + Logistic Regression Baseline
+
+Train Accuracy: 0.8913
+Val Accuracy:   0.8704
+Test Accuracy:  0.8725
+
+Test F1 (macro):    0.8405
+Test F1 (weighted): 0.8690
+Test ROC-AUC (OVR): 0.9525
+
+
+CLASSIFICATION REPORT (I removed the multiple "=" that you might see in the code)
+
+              precision    recall  f1-score   support
+
+    Negative     0.8513    0.6442    0.7334      2088
+     Neutral     0.8546    0.9647    0.9063      5721
+    Positive     0.9016    0.8630    0.8819      5352
+
+    accuracy                         0.8725     13161
+   macro avg     0.8692    0.8240    0.8405     13161
+weighted avg     0.8732    0.8725    0.8690     13161
+
+
+Confusion Matrix
+[[1345  388  355]
+ [  53 5519  149]
+ [ 182  551 4619]]
