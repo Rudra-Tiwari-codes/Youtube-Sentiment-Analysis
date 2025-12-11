@@ -46,6 +46,7 @@ def load_config():
 
 def load_data(config):
     """Load train, validation, and test sets"""
+    # Loading the data like it's the Matrix - red pill or blue pill?
     logger.info("Loading datasets...")
     
     data_dir = Path(config['paths']['processed_data'])
@@ -78,6 +79,7 @@ def prepare_features(train, val, test, config):
         max_df=tfidf_config['max_df'],
         stop_words='english',
         sublinear_tf=True  # Log scaling
+    )
     
     # Fit on training data only
     X_train = vectorizer.fit_transform(train['cleaned_text'])

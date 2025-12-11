@@ -60,7 +60,7 @@ class_names = ['Negative', 'Neutral', 'Positive']
 for idx, (model_name, model_file) in enumerate(models_with_proba.items()):
     model_path = project_root / "models" / model_file
     if not model_path.exists():
-        print(f"  ⚠️  {model_name} not found, skipping...")
+        print(f"  [WARNING] {model_name} not found, skipping...")
         continue
     
     model = joblib.load(model_path)

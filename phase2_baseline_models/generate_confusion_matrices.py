@@ -42,7 +42,7 @@ for model_name, model_file in models.items():
     model_path = project_root / "models" / model_file
     
     if not model_path.exists():
-        print(f"⚠️  {model_name} model not found, skipping...")
+        print(f"[WARNING] {model_name} model not found, skipping...")
         continue
     
     # Load model

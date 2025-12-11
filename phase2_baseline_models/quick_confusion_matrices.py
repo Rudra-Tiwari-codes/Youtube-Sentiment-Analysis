@@ -75,6 +75,6 @@ for model_path in model_files:
         generated_count += 1
         
     except Exception as e:
-        print(f"⚠️  Skipped {model_path.name}: {str(e)}")
+        print(f"[WARNING] Skipped {model_path.name}: {str(e)}")
 
 print(f"\n✓ Generated {generated_count} confusion matrices in: {figures_dir}")
