@@ -30,23 +30,31 @@ project_root = Path(__file__).parent.parent
 
 
 def load_results():
-    """Load DistilBERT results from Colab training"""
+    """Load DistilBERT predictions and results"""
     logger.info("Loading test results...")
     
-    # Load test data
-    data_dir = project_root / 'data' / 'processed'
-    test_df = pd.read_csv(data_dir / 'test.csv')
+    # Check if real predictions exist
+    predictions_file = project_root / 'phase4_explainability' / 'data' / 'test_predictions_distilbert.csv'
+    
+    if not predictions_file.exists():
+        logger.error("Predictions file not found!")
+        logger.error(f"Expected: {predictions_file}")
+        logger.error("\nPlease run: phase4_explainability/00_generate_predictions.py")
+        logger.error("This will generate real predictions from the trained DistilBERT model.")
+        raise FileNotFoundError("Run 00_generate_predictions.py first to create predictions")
+    
+    # Load predictions
+    logger.info("Loading real predictions from trained DistilBERT...")
+    predictions_df = pd.read_csv(predictions_file)
     
     # Load label encoder
     label_encoder = joblib.load(project_root / 'models' / 'label_encoder.pkl')
     
-    # Parse results from distilbert_results.txt
-    results_file = project_root / 'distilbert_results.txt'
-    
-    logger.info(f"Test set: {len(test_df):,} samples")
+    logger.info(f"Test set: {len(predictions_df):,} samples")
     logger.info(f"Classes: {label_encoder.classes_}")
+    logger.info(f"Using REAL predictions from trained model")
     
-    return test_df, label_encoder
+    return predictions_df, label_encoder
 
 
 def create_confusion_matrix_plot(y_true, y_pred, class_names, output_dir):
@@ -84,6 +92,7 @@ def create_confusion_matrix_plot(y_true, y_pred, class_names, output_dir):
 
 def analyze_per_class_errors(y_true, y_pred, class_names):
     """Detailed per-class error analysis"""
+    # Error analysis: Where we judge our model's life choices
     logger.info("Analyzing per-class errors...")
     
     results = []
@@ -286,19 +295,42 @@ def simulate_predictions_from_results():
     return np.array(y_true), np.array(y_pred)
 
 
+def extract_predictions(predictions_df, label_encoder):
+    """
+    Extract true labels and predictions from predictions file
+    """
+    logger.info("Extracting predictions from trained model...")
+    
+    # Get true labels
+    y_true = label_encoder.transform(predictions_df['sentiment'])
+    
+    # Get predicted labels
+    y_pred = predictions_df['predicted_class'].values
+    
+    logger.info(f"Extracted {len(y_true):,} real predictions")
+    logger.info(f"Accuracy: {(y_true == y_pred).mean()*100:.2f}%")
+    
+    return y_true, y_pred
+
+
 def main():
     logger.info("="*70)
-    logger.info("PHASE 4: ERROR ANALYSIS")
+    logger.info("PHASE 4: ERROR ANALYSIS WITH REAL PREDICTIONS")
     logger.info("="*70)
     
-    # Load data
-    test_df, label_encoder = load_results()
+    # Load data and predictions
+    try:
+        predictions_df, label_encoder = load_results()
+    except FileNotFoundError:
+        logger.error("\nCannot proceed without predictions file.")
+        return
+    
     class_names = label_encoder.classes_
     
-    # Simulate predictions from confusion matrix
-    y_true, y_pred = simulate_predictions_from_results()
+    # Extract real predictions
+    y_true, y_pred = extract_predictions(predictions_df, label_encoder)
     
-    logger.info(f"\nAnalyzing {len(y_true):,} predictions...")
+    logger.info(f"\nAnalyzing {len(y_true):,} REAL predictions from trained DistilBERT...")
     logger.info(f"Classes: {class_names}")
     
     # Create output directory
