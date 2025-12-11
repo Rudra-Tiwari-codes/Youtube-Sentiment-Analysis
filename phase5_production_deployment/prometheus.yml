@@ -1,0 +1,11 @@
+# Prometheus configuration for YouTube Sentiment Analysis API monitoring
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'sentiment-api'
+    static_configs:
+      - targets: ['sentiment-api:8000']
+    metrics_path: '/metrics'

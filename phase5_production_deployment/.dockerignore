@@ -1,0 +1,70 @@
+# .dockerignore - Files to exclude from Docker build context
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Data files (too large)
+data/raw/
+data/processed/*.csv
+*.csv
+*.db
+*.sqlite
+*.sqlite3
+
+# Models - exclude training artifacts but keep the fine-tuned checkpoint
+phase3_transformer_models/data/
+!phase3_transformer_models/checkpoints/distilbert/
+*.pth
+*.pt
+*.onnx
+
+# Logs
+logs/
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/_build/
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Misc
+misc/
+phase1_data_engineering/
+phase2_baseline_models/
+phase4_explainability/
+*.ipynb
+.DS_Store
+Thumbs.db
+
+# Keep only necessary for inference
+!phase5_production_deployment/
+!config.yaml
+!requirements.txt
+!utils/
+!models/*.pkl
