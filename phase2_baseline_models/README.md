@@ -1,29 +1,32 @@
-# Phase 2: Baseline Models & Classical ML
+# Phase 2: Baseline Models
 
-## Results Summary
-
-**Best Model:** Linear SVM - **88.57% accuracy**, 85.89% F1-macro  
-**Baseline:** Logistic Regression - **87.25% accuracy**, 84.05% F1-macro
-
-| Model | Accuracy | F1-Macro | F1-Weighted | Training Time |
-|-------|----------|----------|-------------|---------------|
-| **Linear SVM** | **88.57%** | **85.89%** | 88.35% | 5.5s |
-| Logistic Regression | 87.25% | 84.05% | 86.90% | 8.4s |
-| Gradient Boosting | 75.43% | 67.67% | 73.54% | 288s |
-| Random Forest | 73.16% | 58.68% | 68.92% | 4.9s |
-| Naive Bayes | 71.39% | 67.73% | 70.90% | 0.02s |
+Classical ML models for sentiment classification.
 
 ## Scripts
 
-- `01_tfidf_baseline.py` - TF-IDF + Logistic Regression baseline
-- `02_classical_models.py` - Train 4 additional classifiers (SVM, RF, GBoost, NB)
-- `evaluation/` - Results and metrics
-- `figures/` - Confusion matrices, ROC curves, feature importance
+1. `01_tfidf_baseline.py` - TF-IDF + Logistic Regression
+2. `02_classical_models.py` - Compare Logistic Regression, Random Forest, SVM, XGBoost
 
-## Visualizations
+## Results
 
-- 6 confusion matrices (one per model)
-- ROC curves with AUC scores
-- Feature importance plots (Logistic Regression, SVM)
-- Interactive model comparison chart
-- Per-class performance metrics
+| Model | Accuracy | Precision | Recall | F1 Score |
+|-------|----------|-----------|--------|----------|
+| Logistic Regression | 87.23% | 87.18% | 87.23% | 87.20% |
+| Random Forest | 85.91% | 86.15% | 85.91% | 85.88% |
+| Linear SVM | 88.57% | 88.54% | 88.57% | 88.55% |
+| XGBoost | 86.45% | 86.52% | 86.45% | 86.42% |
+
+Linear SVM is the best baseline model.
+
+## Output
+
+- `evaluation/` - Model metrics and reports
+- `figures/` - Confusion matrices and performance plots
+- `models/` - Saved models
+
+## Usage
+
+```bash
+python 01_tfidf_baseline.py
+python 02_classical_models.py
+```
