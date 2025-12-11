@@ -1,0 +1,121 @@
+======================================================================
+PHASE 4: MODEL COMPARISON ANALYSIS
+======================================================================
+
+MODEL RANKING (By Accuracy)
+----------------------------------------------------------------------
+6. DistilBERT (Phase 3)
+   Accuracy: 0.9647 (96.47%)
+   F1 Macro: 0.9563
+   F1 Weighted: 0.9647
+   Type: Transformer | Params: 66M params
+
+2. Linear SVM (Phase 2)
+   Accuracy: 0.8857 (88.57%)
+   F1 Macro: 0.8663
+   F1 Weighted: 0.8834
+   Type: Classical ML | Params: 10K features
+
+1. Logistic Regression (Phase 2)
+   Accuracy: 0.8725 (87.25%)
+   F1 Macro: 0.8512
+   F1 Weighted: 0.8698
+   Type: Classical ML | Params: 10K features
+
+3. Gradient Boosting (Phase 2)
+   Accuracy: 0.7543 (75.43%)
+   F1 Macro: 0.7125
+   F1 Weighted: 0.7489
+   Type: Ensemble | Params: 100 estimators
+
+4. Random Forest (Phase 2)
+   Accuracy: 0.7316 (73.16%)
+   F1 Macro: 0.6845
+   F1 Weighted: 0.7254
+   Type: Ensemble | Params: 100 estimators
+
+5. Naive Bayes (Phase 2)
+   Accuracy: 0.7139 (71.39%)
+   F1 Macro: 0.6723
+   F1 Weighted: 0.7092
+   Type: Probabilistic | Params: Multinomial
+
+PHASE-WISE COMPARISON
+======================================================================
+
+PHASE 2 BEST: Linear SVM
+----------------------------------------------------------------------
+  Accuracy: 0.8857 (88.57%)
+  F1 Macro: 0.8663
+  F1 Weighted: 0.8834
+  Type: Classical ML
+
+PHASE 3 BEST: DistilBERT
+----------------------------------------------------------------------
+  Accuracy: 0.9647 (96.47%)
+  F1 Macro: 0.9563
+  F1 Weighted: 0.9647
+  Type: Transformer
+
+IMPROVEMENT ANALYSIS
+======================================================================
+
+Accuracy Improvement: +7.90 percentage points
+Relative Improvement: 8.92%
+
+F1 Macro Improvement: +9.00 percentage points
+
+MODEL TYPE PERFORMANCE
+----------------------------------------------------------------------
+
+Classical ML:
+  Models: 2
+  Avg Accuracy: 0.8791
+  Best Accuracy: 0.8857
+  Avg F1 Macro: 0.8587
+
+
+Ensemble:
+  Models: 2
+  Avg Accuracy: 0.7429
+  Best Accuracy: 0.7543
+  Avg F1 Macro: 0.6985
+
+
+Probabilistic:
+  Models: 1
+  Avg Accuracy: 0.7139
+  Best Accuracy: 0.7139
+  Avg F1 Macro: 0.6723
+
+
+Transformer:
+  Models: 1
+  Avg Accuracy: 0.9647
+  Best Accuracy: 0.9647
+  Avg F1 Macro: 0.9563
+
+KEY INSIGHTS
+======================================================================
+
+1. TRANSFORMER SUPERIORITY:
+   DistilBERT outperforms all classical ML models by significant margin
+   (+7.90% over best classical model)
+
+2. CLASSICAL ML PERFORMANCE:
+   - Linear models (SVM, Logistic Reg) perform best
+   - Tree-based ensembles underperform (likely due to sparse TF-IDF)
+   - Naive Bayes baseline achieves 71.39% (decent baseline)
+
+3. F1 SCORE CONSISTENCY:
+   - DistilBERT maintains high F1 across all metrics
+   - Classical models show more variation between metrics
+
+4. PRODUCTION RECOMMENDATION:
+   - Primary Model: DistilBERT (96.47% accuracy)
+   - Fallback Model: Linear SVM (88.57% accuracy, fast inference)
+   - Use SVM for low-latency requirements, DistilBERT for accuracy
+
+======================================================================
+END OF COMPARISON REPORT
+======================================================================

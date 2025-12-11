@@ -1,0 +1,79 @@
+======================================================================
+PHASE 4: COMPREHENSIVE ERROR ANALYSIS
+DistilBERT Sentiment Classifier
+======================================================================
+
+OVERALL STATISTICS
+----------------------------------------------------------------------
+Total Test Samples: 13,161
+Total Correct: 12,696
+Total Errors: 465
+Overall Accuracy: 0.9647 (96.47%)
+Overall Error Rate: 0.0353 (3.53%)
+
+PER-CLASS ERROR ANALYSIS
+======================================================================
+
+CLASS: NEGATIVE
+----------------------------------------------------------------------
+  Total Samples: 2,088
+  Correct Predictions: 1,932
+  Misclassifications: 156
+  Class Accuracy: 0.9253 (92.53%)
+  Class Error Rate: 0.0747 (7.47%)
+
+  Misclassification Breakdown:
+    → Predicted as Neutral: 37 (1.77%)
+    → Predicted as Positive: 119 (5.70%)
+
+CLASS: NEUTRAL
+----------------------------------------------------------------------
+  Total Samples: 5,721
+  Correct Predictions: 5,552
+  Misclassifications: 169
+  Class Accuracy: 0.9705 (97.05%)
+  Class Error Rate: 0.0295 (2.95%)
+
+  Misclassification Breakdown:
+    → Predicted as Negative: 63 (1.10%)
+    → Predicted as Positive: 106 (1.85%)
+
+CLASS: POSITIVE
+----------------------------------------------------------------------
+  Total Samples: 5,352
+  Correct Predictions: 5,212
+  Misclassifications: 140
+  Class Accuracy: 0.9738 (97.38%)
+  Class Error Rate: 0.0262 (2.62%)
+
+  Misclassification Breakdown:
+    → Predicted as Negative: 96 (1.79%)
+    → Predicted as Neutral: 44 (0.82%)
+
+CONFUSION MATRIX (COUNTS)
+----------------------------------------------------------------------
+[[1932   37  119]
+ [  63 5552  106]
+ [  96   44 5212]]
+
+CONFUSION MATRIX (NORMALIZED)
+----------------------------------------------------------------------
+[[0.92528736 0.01772031 0.05699234]
+ [0.01101206 0.97045971 0.01852823]
+ [0.01793722 0.00822123 0.97384155]]
+
+ERROR PATTERN ANALYSIS
+======================================================================
+
+Most Confused Class Pair:
+  Negative ↔ Positive: 119 misclassifications
+
+Most Challenging Class:
+  Negative: 7.47% error rate
+
+Best Performing Class:
+  Positive: 97.38% accuracy
+
+======================================================================
+END OF ERROR ANALYSIS
+======================================================================

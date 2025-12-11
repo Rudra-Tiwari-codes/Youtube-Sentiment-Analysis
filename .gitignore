@@ -17,6 +17,10 @@ data/raw/*.parquet
 data/processed/
 !data/.gitkeep
 
+# Tokenized datasets (too large for GitHub)
+phase3_transformer_models/data/
+!phase3_transformer_models/data/.gitkeep
+
 logs/
 *.log
 

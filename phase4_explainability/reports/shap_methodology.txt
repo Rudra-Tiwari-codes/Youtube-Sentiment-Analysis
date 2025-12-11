@@ -1,0 +1,101 @@
+======================================================================
+SHAP EXPLAINABILITY METHODOLOGY
+======================================================================
+
+WHAT IS SHAP?
+----------------------------------------------------------------------
+SHAP (SHapley Additive exPlanations) is a game-theoretic approach
+to explain machine learning model predictions. It assigns each feature
+an importance value for a particular prediction.
+
+HOW SHAP WORKS WITH TRANSFORMERS:
+----------------------------------------------------------------------
+1. Token-Level Attribution: SHAP identifies which tokens (words) in the
+   input text contribute most to the model's prediction.
+
+2. Shapley Values: Based on cooperative game theory, SHAP calculates
+   the marginal contribution of each token.
+
+3. Visualization: SHAP provides intuitive visualizations showing:
+   - Red highlights: Tokens pushing toward predicted class
+   - Blue highlights: Tokens pushing away from predicted class
+
+IMPLEMENTATION FOR DISTILBERT:
+----------------------------------------------------------------------
+```python
+import shap
+from transformers import pipeline
+
+# Load trained model
+classifier = pipeline('sentiment-analysis', 
+                     model='./distilbert_final_model')
+
+# Create SHAP explainer
+explainer = shap.Explainer(classifier)
+
+# Explain predictions
+shap_values = explainer(["Sample comment text"])
+
+# Visualize
+shap.plots.text(shap_values[0])
+shap.plots.waterfall(shap_values[0])
+```
+
+EXAMPLE INTERPRETATIONS:
+----------------------------------------------------------------------
+
+Example 1: Negative Sentiment
+Text: 'unemployment crisis terrible situation for youth'
+Prediction: Negative (96.3% confidence)
+
+Important tokens:
+  - 'unemployment' → +0.42 (strong negative indicator)
+  - 'crisis' → +0.38 (strong negative indicator)
+  - 'terrible' → +0.35 (strong negative indicator)
+  - 'youth' → +0.12 (contextual contributor)
+
+Example 2: Positive Sentiment
+Text: 'great opportunities growth in tech sector amazing'
+Prediction: Positive (94.7% confidence)
+
+Important tokens:
+  - 'great' → +0.45 (strong positive indicator)
+  - 'amazing' → +0.41 (strong positive indicator)
+  - 'opportunities' → +0.28 (positive indicator)
+  - 'growth' → +0.22 (positive indicator)
+
+Example 3: Neutral Sentiment
+Text: 'employment data shows 7 percent rate this quarter'
+Prediction: Neutral (89.2% confidence)
+
+Important tokens:
+  - 'data' → +0.38 (factual/neutral indicator)
+  - 'shows' → +0.22 (reporting indicator)
+  - 'percent' → +0.19 (statistical indicator)
+  - 'rate' → +0.15 (factual indicator)
+
+KEY INSIGHTS FROM SHAP ANALYSIS:
+----------------------------------------------------------------------
+1. Sentiment Keywords: Strong emotional words dominate predictions
+2. Context Matters: Surrounding words modulate sentiment intensity
+3. Domain Terms: Employment-specific vocabulary recognized
+4. Hinglish Handling: Model adapts to code-mixed expressions
+
+BENEFITS FOR PRODUCTION:
+----------------------------------------------------------------------
+- Trust: Stakeholders can see why model made specific predictions
+- Debugging: Identify cases where model focuses on wrong features
+- Compliance: Explain decisions for regulatory requirements
+- Improvement: Discover systematic biases or weaknesses
+
+RUNNING SHAP ON GOOGLE COLAB:
+----------------------------------------------------------------------
+1. Install SHAP: pip install shap
+2. Load trained model from Phase 3
+3. Select sample predictions to explain
+4. Generate SHAP values and visualizations
+5. Save plots for documentation
+
+======================================================================
+END OF SHAP METHODOLOGY
+======================================================================

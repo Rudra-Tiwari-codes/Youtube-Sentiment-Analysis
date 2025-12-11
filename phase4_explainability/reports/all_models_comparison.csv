@@ -1,0 +1,7 @@
+phase,model,type,accuracy,f1_macro,f1_weighted,parameters
+Phase 2,Logistic Regression,Classical ML,0.8725,0.8512,0.8698,10K features
+Phase 2,Linear SVM,Classical ML,0.8857,0.8663,0.8834,10K features
+Phase 2,Gradient Boosting,Ensemble,0.7543,0.7125,0.7489,100 estimators
+Phase 2,Random Forest,Ensemble,0.7316,0.6845,0.7254,100 estimators
+Phase 2,Naive Bayes,Probabilistic,0.7139,0.6723,0.7092,Multinomial
+Phase 3,DistilBERT,Transformer,0.9647,0.9563,0.9647,66M params
