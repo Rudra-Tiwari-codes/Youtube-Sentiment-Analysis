@@ -68,7 +68,7 @@ class TextCleaner:
         
         if mode == 'remove':
             return replace_emoji(text, replace='')
-        elif mode == 'demojize': #demojize hahaha
+        elif mode == 'demojize':
             return demojized
         return text
     

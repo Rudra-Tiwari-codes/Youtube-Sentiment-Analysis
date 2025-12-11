@@ -169,7 +169,7 @@ def main():
     OUTPUT_DIR = "./data/processed"
     
     logger.info("="*80)
-    logger.info("Training/Validation/Test Stratified Split") # STRATIFIEDDDDDDDDDDDD
+    logger.info("Training/Validation/Test Stratified Split")
     logger.info("="*80)
     
     # Verify input exists

@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 def export_raw_data(db_path: str, output_path: str) -> dict:
     """    Export comments from database to CSV file. """
+    # Time to liberate the data from its SQLite prison
     start_time = datetime.now()
     logger.info(f"Starting data export from {db_path}")
     
