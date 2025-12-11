@@ -58,10 +58,22 @@ def load_prepared_data():
     data_dir = project_root / 'phase3_transformer_models' / 'data'
     
     # Load datasets
-    datasets = load_from_disk(str(data_dir / 'distilbert_base_uncased_datasets'))
+    datasets_path = data_dir / 'distilbert_base_uncased_datasets'
+    if not datasets_path.exists():
+        raise FileNotFoundError(
+            f"Tokenized datasets not found at {datasets_path}\n"
+            "Please run phase3_transformer_models/01_data_preparation.py first."
+        )
+    datasets = load_from_disk(str(datasets_path))
     
     # Load label mappings
-    label_mappings = joblib.load(data_dir / 'label_mappings.pkl')
+    label_mappings_path = data_dir / 'label_mappings.pkl'
+    if not label_mappings_path.exists():
+        raise FileNotFoundError(
+            f"Label mappings not found at {label_mappings_path}\n"
+            "Please run phase3_transformer_models/01_data_preparation.py first."
+        )
+    label_mappings = joblib.load(label_mappings_path)
     
     logger.info(f" Datasets loaded")
     logger.info(f"   Train: {len(datasets['train']):,} samples")

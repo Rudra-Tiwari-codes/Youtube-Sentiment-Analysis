@@ -311,7 +311,7 @@ def main():
     logger.info("Loading DistilBERT model...")
     model = DistilBertForSequenceClassification.from_pretrained(
         'distilbert-base-uncased',
-        num_labels=3
+        num_labels=len(label_encoder.classes_)
     )
     model.to(device)
     logger.info(f"Model loaded: {sum(p.numel() for p in model.parameters()):,} parameters")

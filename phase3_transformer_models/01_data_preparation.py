@@ -51,7 +51,15 @@ def prepare_label_mapping():
     """Create label mapping for transformers"""
     # Load label encoder from Phase 2
     model_dir = project_root / 'models'
-    label_encoder = joblib.load(model_dir / 'label_encoder.pkl')
+    label_encoder_path = model_dir / 'label_encoder.pkl'
+    
+    if not label_encoder_path.exists():
+        raise FileNotFoundError(
+            f"Label encoder not found at {label_encoder_path}\n"
+            "Please run phase2_baseline_models/01_tfidf_baseline.py first to create it."
+        )
+    
+    label_encoder = joblib.load(label_encoder_path)
     
     # Create label2id and id2label mappings
     label2id = {label: idx for idx, label in enumerate(label_encoder.classes_)}
@@ -217,7 +225,7 @@ def main():
     logger.info("\n" + "="*60)
     logger.info(" Data prep done")
     logger.info("="*60)
-    logger.info("Ready to train transformers lol")
+    logger.info("Ready to train transformers")
 
 
 if __name__ == "__main__":

@@ -44,8 +44,8 @@ def load_data():
     val_df = pd.read_csv(data_dir / 'val.csv')
     test_df = pd.read_csv(data_dir / 'test.csv')
     
-    train_df = train_df.sample(frac=0.2, random_state=42).reset_index(drop=True)
-    val_df = val_df.sample(frac=0.5, random_state=42).reset_index(drop=True)
+    # Use full dataset for optimal model performance
+    # Previous sampling (20% train, 50% val) was removed to maximize training data
     
     # Load label encoder
     label_encoder = joblib.load(project_root / 'models' / 'label_encoder.pkl')
@@ -75,7 +75,7 @@ def prepare_datasets(train_df, val_df, test_df, label_encoder, tokenizer):
             examples['cleaned_text'],
             padding='max_length',
             truncation=True,
-            max_length=256  # Reduced for speed (my PC's broke)
+            max_length=512  # Standardized across all scripts (config.yaml)
         )
     
     logger.info("Tokenizing datasets...")
@@ -130,7 +130,7 @@ def main():
     logger.info("Loading DistilBERT model...")
     model = DistilBertForSequenceClassification.from_pretrained(
         'distilbert-base-uncased',
-        num_labels=3
+        num_labels=len(label_encoder.classes_)
     )
     
     # Training arguments
