@@ -44,37 +44,6 @@ The system follows a five-phase pipeline:
 4. **Explainability**: SHAP analysis and error patterns
 5. **Production Deployment**: REST API with monitoring
 
-## Quick Start
-
-### Installation
-
-```bash
-git clone https://github.com/Rudra-Tiwari-codes/Youtube-Sentiment-Analysis.git
-cd Youtube-Sentiment-Analysis
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### Run API Server
-
-```bash
-cd phase5_production_deployment
-python 01_fastapi_server.py
-```
-
-Visit http://localhost:8000/docs for interactive API documentation.
-
-### Docker Deployment
-
-```bash
-# Windows
-.\phase5_production_deployment\deploy.ps1 -DeployType cpu
-
-# Linux/Mac
-bash phase5_production_deployment/deploy.sh cpu
-```
-
 ## Project Structure
 
 ```
@@ -111,40 +80,6 @@ Youtube-Sentiment-Analysis/
     ├── Dockerfile
     └── docker-compose.yml
 ```
-
-## Research Methodology
-
-### Phase 1: Data Engineering
-- **Data Collection**: YouTube API scraping with keyword targeting
-- **Preprocessing**: Text normalization, URL removal, special character handling
-- **Language Detection**: Automated English/Hindi/Mixed classification
-- **Labeling**: VADER sentiment analysis for initial labels
-- **EDA**: Distribution analysis, temporal trends, length patterns
-
-### Phase 2: Baseline Models
-- **Feature Engineering**: TF-IDF with 10,000 features
-- **Models Tested**: Naive Bayes, Random Forest, Gradient Boosting, Logistic Regression, Linear SVM
-- **Best Baseline**: Linear SVM (88.57% accuracy)
-- **Insights**: Traditional ML struggles with code-mixed text and nuanced sentiments
-
-### Phase 3: Transformer Models
-- **Model**: DistilBERT (distilbert-base-uncased)
-- **Fine-tuning**: 3 epochs, learning rate 2e-5, batch size 16
-- **Hardware**: GPU training (NVIDIA CUDA)
-- **Training Time**: ~30 minutes on GPU
-- **Result**: 96.47% accuracy, 95.63% macro F1
-
-### Phase 4: Explainability
-- **Error Analysis**: 465 misclassifications analyzed
-- **Confusion Patterns**: Neutral-Positive confusion (1.85%), Negative-Positive confusion (5.70%)
-- **SHAP Analysis**: Token-level importance for predictions
-- **Model Comparison**: Cross-phase performance evaluation
-
-### Phase 5: Production Deployment
-- **Framework**: FastAPI with Uvicorn
-- **Containerization**: Docker with CPU/GPU support
-- **Performance**: 50+ req/sec, 48ms avg latency
-- **Monitoring**: Health checks, metrics, logging
 
 ## Research Results
 
