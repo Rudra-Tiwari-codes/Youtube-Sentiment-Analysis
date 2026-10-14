@@ -166,20 +166,29 @@ machine spec), or cut Phase 5 to a short "deployment" paragraph without numbers.
   two figure files are missing. Duplicate sections: "Phase 4: Explainability Analysis" and "Phase 4:
   Explainability and Error Analysis". Two Docker sections and two inference-function definitions repeat each other.
 - Author block is a placeholder ("Anonymous Authors / University Name").
-- Related-work numbers to **check against the actual papers before keeping** (several look wrong
-  or unverifiable):
-  - Sharma et al. 2016 "3,879 tweets for POS tagging" and Joshi et al. 2016 "6,096 samples, 69.7%".
-    The 3,879-sentence Hinglish *sentiment* dataset is usually attributed to Joshi et al. (COLING
-    2016), so these look swapped.
-  - "Prabhu et al. 2016 ... 58.5% F1" is the same COLING paper as Joshi et al. (Prabhu is a
-    co-author). Check.
-  - "Bhat et al. 2022 ... 83.4% on 8K samples": couldn't locate. Verify or remove.
-  - "MuRIL 89.6% on IndicXNLI": IndicXNLI was published after MuRIL. Verify.
-  - "SHAP achieving 98.7% faithfulness", "TextBlob 0.82 correlation to human annotations",
-    "Asghar et al. Yelp 95.4% with CNNs", "Obadimu 91.2% AUC": verify or remove.
-  - "BERT ... GLUE (80.5% accuracy)": 80.5 is the GLUE *score*, not accuracy.
-  - "MuRIL ... vocabulary size 197,285" and "237M parameters": check against the model card.
+- **Related-work citations** (checked by web search, Oct 2026):
+  - **Wrong:** "Sharma et al. 2016 introduced ... 3,879 tweets for POS tagging". Sharma et al.
+    (NAACL 2016, N16-1159) is a shallow-parsing pipeline (language ID, normalisation, POS,
+    chunking). The **3,879** figure belongs to **Joshi et al. (COLING 2016, C16-1234)**: 3,879
+    Facebook comments from public pages (Salman Khan, Narendra Modi), labelled ~15% negative /
+    50% neutral / 35% positive.
+  - **Wrong:** "Joshi et al. expanded to 6,096 samples across Twitter and Facebook ... 69.7% with
+    SVM". Their dataset is the 3,879 Facebook comments above. Re-read the paper's results table
+    before quoting any accuracy.
+  - **Double-counted:** "Prabhu et al. 2016 ... 58.5% F1" is the *same* COLING paper. The arXiv
+    version (1611.00472) lists Prabhu first. Cite it once.
+  - **Wrong:** "MuRIL achieving 89.6% accuracy on IndicXNLI". IndicXNLI (EMNLP 2022) was published
+    after MuRIL; the MuRIL paper (arXiv 2103.10730) reports **74.1** zero-shot accuracy on XNLI
+    (mBERT 66.8). Remove or replace.
+  - **Fix:** MuRIL has **236M** parameters (paper says 237M). The vocabulary of 197,285 is correct.
+  - **Not found:** "Bhat et al. 2022 ... 83.4% on 8K samples". No such paper turned up. Remove it
+    unless you have the actual reference.
+  - **Unverified, remove unless you have the source:** "SHAP achieving 98.7% faithfulness" (not a
+    standard SHAP result), "TextBlob 0.82 correlation to human annotations", "Asghar et al. Yelp
+    95.4% with CNNs", "Obadimu 91.2% AUC", "Sharma et al. 2014 Hindi WordNet 78.3%".
+  - "BERT ... GLUE (80.5% accuracy)": 80.5 is the GLUE *score*, not accuracy. Same for RoBERTa 88.5.
   - "achieving 52.7% correlation with TextBlob" should be Pearson r = 0.527, not a percentage.
+  - Hutto & Gilbert 2014 (VADER) is commonly cited for F1 = 0.96 on tweets; that's fine to keep.
 
 ## 7. Suggested honest framing
 
