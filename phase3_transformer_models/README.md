@@ -6,6 +6,8 @@ DistilBERT fine-tuning for sentiment classification.
 
 1. `01_data_preparation.py` - Tokenize data for transformers
 2. `05_distilbert_hf_trainer.py` - Fine-tune DistilBERT
+3. `06_distilbert_verification.py` - Multi-seed re-run with per-language, VADER-confidence and
+   leakage analysis for the paper (run via `Phase3_DistilBERT_Verification_Colab.ipynb`)
 
 ## Results
 

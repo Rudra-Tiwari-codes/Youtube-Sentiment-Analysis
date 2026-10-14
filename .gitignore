@@ -129,3 +129,6 @@ dmypy.json
 *.zip
 *.rar
 *.7z
+
+# Verification-run checkpoints (results/ itself is kept)
+results/**/checkpoints/
