@@ -158,6 +158,19 @@ def check_svm_features():
     print(f"  Linear SVM:          {svm}  (default loss = squared_hinge)")
 
 
+def check_romanized_hindi_share():
+    section("5b. Romanized Hindi in the real training set (from TF-IDF idf values)")
+    # With smooth_idf=True: idf = ln((1 + n) / (1 + df)) + 1, so df = (1 + n) / exp(idf - 1) - 1.
+    vectorizer = joblib.load(project_root / "models" / "tfidf_vectorizer.pkl")
+    n_train = 105_286
+    for word in ["hai", "bhi", "ke", "ki", "kya", "nahi", "job", "jobs", "government", "unemployment"]:
+        idf = vectorizer.idf_[vectorizer.vocabulary_[word]]
+        doc_freq = (1 + n_train) / np.exp(idf - 1) - 1
+        print(f"  {word:14}{doc_freq:>8,.0f} training comments ({doc_freq / n_train * 100:4.1f}%)")
+    print("  'hai' alone is in ~10% of comments: a lower bound on romanized Hinglish,")
+    print("  which the Phase 1 detector labels 'English' (paper reports 2.18% code-mixed).")
+
+
 def metrics_from_cm(cm):
     cm = np.array(cm, dtype=float)
     precision = np.diag(cm) / cm.sum(axis=0)
@@ -207,4 +220,5 @@ if __name__ == "__main__":
     check_language_label_distribution()
     check_date_range()
     check_svm_features()
+    check_romanized_hindi_share()
     check_confusion_matrices()

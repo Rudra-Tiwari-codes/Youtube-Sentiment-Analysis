@@ -1,0 +1,248 @@
+{
+  "n": 3879,
+  "human_label_distribution_pct": {
+    "Neutral": 50.45,
+    "Positive": 34.85,
+    "Negative": 14.69
+  },
+  "phase1_language_detector_pct": {
+    "English": 98.14,
+    "Code-Mixed": 1.86
+  },
+  "vader_label_distribution_pct": {
+    "Neutral": 66.72,
+    "Positive": 26.71,
+    "Negative": 6.57
+  },
+  "vader_vs_human": {
+    "accuracy": 50.63,
+    "f1_macro": 41.24,
+    "cohen_kappa": 0.119,
+    "per_class_f1": {
+      "Negative": 21.33,
+      "Neutral": 60.59,
+      "Positive": 41.79
+    },
+    "confusion_matrix(rows=human Neg/Neu/Pos)": [
+      [
+        88,
+        415,
+        67
+      ],
+      [
+        110,
+        1377,
+        470
+      ],
+      [
+        57,
+        796,
+        499
+      ]
+    ]
+  },
+  "vader_compound_exactly_zero_pct": 66.51,
+  "majority_class_baseline_acc": 50.45,
+  "committed_models_vs_human": {
+    "linear_svm": {
+      "accuracy": 51.02,
+      "f1_macro": 38.79,
+      "cohen_kappa": 0.106,
+      "per_class_f1": {
+        "Negative": 14.25,
+        "Neutral": 61.93,
+        "Positive": 40.19
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          52,
+          466,
+          52
+        ],
+        [
+          62,
+          1466,
+          429
+        ],
+        [
+          46,
+          845,
+          461
+        ]
+      ]
+    },
+    "logreg_baseline": {
+      "accuracy": 51.51,
+      "f1_macro": 37.89,
+      "cohen_kappa": 0.106,
+      "per_class_f1": {
+        "Negative": 11.24,
+        "Neutral": 62.75,
+        "Positive": 39.7
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          39,
+          488,
+          43
+        ],
+        [
+          47,
+          1516,
+          394
+        ],
+        [
+          38,
+          871,
+          443
+        ]
+      ]
+    },
+    "naive_bayes": {
+      "accuracy": 53.13,
+      "f1_macro": 33.05,
+      "cohen_kappa": 0.09,
+      "per_class_f1": {
+        "Negative": 3.69,
+        "Neutral": 66.62,
+        "Positive": 28.85
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          11,
+          547,
+          12
+        ],
+        [
+          8,
+          1794,
+          155
+        ],
+        [
+          8,
+          1088,
+          256
+        ]
+      ]
+    },
+    "random_forest": {
+      "accuracy": 53.18,
+      "f1_macro": 33.71,
+      "cohen_kappa": 0.098,
+      "per_class_f1": {
+        "Negative": 1.38,
+        "Neutral": 65.94,
+        "Positive": 33.82
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          4,
+          544,
+          22
+        ],
+        [
+          4,
+          1735,
+          218
+        ],
+        [
+          2,
+          1026,
+          324
+        ]
+      ]
+    },
+    "gradient_boosting": {
+      "accuracy": 52.77,
+      "f1_macro": 36.19,
+      "cohen_kappa": 0.107,
+      "per_class_f1": {
+        "Negative": 8.26,
+        "Neutral": 65.38,
+        "Positive": 34.94
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          27,
+          511,
+          32
+        ],
+        [
+          29,
+          1673,
+          255
+        ],
+        [
+          28,
+          977,
+          347
+        ]
+      ]
+    }
+  },
+  "committed_models_vs_vader": {
+    "linear_svm": 90.38,
+    "logreg_baseline": 88.14,
+    "naive_bayes": 74.79,
+    "random_forest": 79.25,
+    "gradient_boosting": 82.57
+  },
+  "comments_with_zero_tfidf_features_pct": 2.04,
+  "controlled_experiment_tfidf_svm_5fold": {
+    "trained_on_vader__scored_vs_vader (what the paper reports)": 85.25,
+    "trained_on_vader__scored_vs_human (real accuracy)": {
+      "accuracy": 51.38,
+      "f1_macro": 38.36,
+      "cohen_kappa": 0.099,
+      "per_class_f1": {
+        "Negative": 15.25,
+        "Neutral": 62.86,
+        "Positive": 36.96
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          52,
+          481,
+          37
+        ],
+        [
+          27,
+          1537,
+          393
+        ],
+        [
+          33,
+          915,
+          404
+        ]
+      ]
+    },
+    "trained_on_human__scored_vs_human": {
+      "accuracy": 67.08,
+      "f1_macro": 63.85,
+      "cohen_kappa": 0.439,
+      "per_class_f1": {
+        "Negative": 56.15,
+        "Neutral": 72.22,
+        "Positive": 63.18
+      },
+      "confusion_matrix(rows=human Neg/Neu/Pos)": [
+        [
+          283,
+          208,
+          79
+        ],
+        [
+          105,
+          1492,
+          360
+        ],
+        [
+          50,
+          475,
+          827
+        ]
+      ]
+    }
+  }
+}

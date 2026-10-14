@@ -12,9 +12,11 @@ cannot produce are listed as **[unsupported]**. Those need a source, or they nee
 
 ## How to use this with Claude
 
-Paste this whole file together with `research_paper.tex` and ask:
+Paste this whole file together with `research_paper.tex` (and
+`paper_audit/results/hinglish_human_label_check.json`) and ask:
 
-> Revise research_paper.tex using PAPER_AUDIT.md. Apply every correction in sections 1–6. Delete every
+> Revise research_paper.tex using PAPER_AUDIT.md. Apply every correction in sections 1–6, and add
+> the human-label experiment from section 1b as a new results subsection with its caveats. Delete every
 > claim listed as [unsupported] unless I give you a source for it. Reframe the contribution as in
 > section 7. Do not invent any new numbers. Where a number must come from the verification run
 > (section 8), leave a visible `\todo{}` placeholder instead.
@@ -69,6 +71,58 @@ score (≥0.05 Positive, ≤−0.05 Negative). No human labels exist anywhere in
 above. Delete "extends VADER to code-mixed Hinglish scenarios with validation". Delete or replace the
 500-sample annotation claim.
 
+## 1b. Measured: VADER and your models against HUMAN labels on Hinglish
+
+Your YouTube data has no human labels, so I used a public human-annotated Hinglish set: the
+IIITH Codemixed dataset from Joshi et al. (COLING 2016), 3,879 romanized Hindi-English comments
+(Facebook, public pages). I ran your own Phase 1 cleaning, language detector and VADER labelling
+on it, plus your committed Phase 2 models. Reproduce with
+`python paper_audit/hinglish_human_label_check.py`; output in `paper_audit/results/`.
+
+| Labeller / model (scored against human labels) | Accuracy | Macro-F1 | Cohen's κ |
+|---|---:|---:|---:|
+| Always predict the majority class (Neutral) | 50.45% | 22.4% | 0.00 |
+| **VADER, exactly as `04_sentiment_labeling.py`** | **50.63%** | **41.24%** | **0.12** |
+| **Your committed Linear SVM** (trained on VADER-labelled YouTube data) | **51.02%** | 38.79% | 0.11 |
+| Your committed Logistic Regression | 51.51% | 37.89% | 0.11 |
+| Your committed Naive Bayes / RF / GBoost | 52.8–53.2% | 33–36% | 0.09–0.11 |
+| Same TF-IDF + LinearSVC, 5-fold CV, **trained on VADER labels** | 51.38% | 38.36% | 0.10 |
+| Same TF-IDF + LinearSVC, 5-fold CV, **trained on human labels** | **67.08%** | **63.85%** | **0.44** |
+
+What this shows:
+- **On romanized Hinglish, VADER is no better than always guessing "Neutral"** (50.63% vs 50.45%,
+  κ = 0.12, "slight" agreement). 66.5% of comments get a compound score of exactly 0.
+  Negative F1 is only 21%: VADER finds 88 of 570 human-negative comments.
+- **Models trained on VADER labels inherit this.** Your committed SVM agrees with VADER on
+  **90.4%** of these comments but with humans on only **51.0%**.
+- **The evaluation hides it.** Trained on VADER labels and scored against VADER labels (the paper's
+  methodology), the same classifier reports **85.25%**. Scored against humans it gets **51.38%**.
+  Trained on human labels it gets **67.08%**. The ~34-point gap is purely an artifact of
+  evaluating against the labeller you trained on.
+- **Your language detector calls 98.1% of this Hinglish "English"** (1.9% Code-Mixed).
+
+**How much of your corpus this affects:** the committed TF-IDF vectorizer stores each word's
+document frequency in your real 105,286-comment training set. The Hindi word **"hai" appears in
+10.0% of training comments (10,544)**, more than "job" (8.1%). Other markers: *bhi* 4.2%, *ke*
+4.2%, *ki* 4.2%, *kya* 2.5%, *nahi* 2.4%. So **at least ~10% of the corpus is romanized
+Hinglish** (likely more, since not every Hinglish comment contains "hai"), on top of 3.4%
+Devanagari. On both, the labels are near chance against humans.
+(`python paper_audit/verify_from_artifacts.py`, section 5b.)
+
+**Caveats to state in the paper:** the human-labelled set is Facebook comments on celebrity and
+political pages, not employment videos on YouTube, so treat these numbers as indicative of
+VADER's behaviour on romanized Hinglish, not as your corpus's exact error rate. VADER is much better on
+genuine English text, so overall label quality on your corpus is higher than 51%. The honest way to
+get your corpus's number is the 300-comment human annotation in section 8.
+
+**Paper text this supports (suggested):** "On a public human-annotated Hindi-English corpus
+(Joshi et al., 2016; n = 3,879), VADER labels agree with human annotators on 50.6% of comments
+(κ = 0.12), no better than the majority-class baseline (50.5%). A TF-IDF + LinearSVC classifier
+trained on VADER labels reaches 85.3% agreement with VADER but only 51.4% accuracy against
+humans; the same classifier trained on human labels reaches 67.1%. At least 10% of our training
+comments contain the Hindi copula *hai*, so a substantial portion of the corpus carries
+near-chance silver labels."
+
 ## 2. The dataset isn't mostly Hinglish, and the language numbers are mislabelled
 
 - By the paper's own detector, **94.34% of comments are "English"**, with Hindi at 3.42% and
@@ -77,7 +131,9 @@ above. Delete "extends VADER to code-mixed Hinglish scenarios with validation". 
 - The detector (`03_language_detection.py`) classifies by **script**. Romanized Hindi ("ye sarkar
   bekar hai") is Latin script, so it's counted as *English*. "Code-Mixed" means Devanagari + Latin in one
   comment. That's a narrow definition, and it misses the most common form of Hinglish. The paper should say
-  so explicitly. The sample comment printed in the Colab notebook ("Dhinilo qualify aithe asalu yem
+  so explicitly. Measured: "hai" alone appears in **10.0%** of training comments, so romanized
+  Hinglish is at least ~10% of the corpus, about 5× the 2.18% reported as code-mixed (section 1b).
+  The sample comment printed in the Colab notebook ("Dhinilo qualify aithe asalu yem
   work istharu salary...") is romanized **Telugu**, so the corpus also contains other Indian
   languages in Latin script, which the paper never mentions.
 - The paper's Algorithm 1 / Eq. (language_classification) **don't match the code**:
@@ -195,14 +251,16 @@ machine spec), or cut Phase 5 to a short "deployment" paragraph without numbers.
 What the work actually shows, and still a reasonable paper:
 
 1. A 131,608-comment YouTube corpus on Indian employment discourse, mostly Latin-script, with
-   3.4% Devanagari, 2.2% mixed-script, and an unmeasured share of romanized Hindi and other Indian
-   languages; heavily concentrated in 2024–25.
+   3.4% Devanagari, 2.2% mixed-script, at least ~10% romanized Hindi (measured via "hai"), and
+   some other Indian languages in Latin script; heavily concentrated in 2024–25.
 2. Silver labels from VADER, with a **quantified analysis of VADER's failure on Hindi/Hinglish**
-   (97.4% of Devanagari comments → Neutral; lexicon collisions like *kia*, *baad*, *acche*). That's
+   (97.4% of Devanagari comments → Neutral; lexicon collisions like *kia*, *baad*, *acche*; and
+   on human-labelled Hinglish, 50.6% accuracy / κ = 0.12, no better than majority class). That's
    a genuine, useful finding. Make it a contribution rather than hiding it.
 3. A fine-tuned DistilBERT reproduces VADER's labels with 96.47% agreement (vs 88.57% for TF-IDF +
    Linear SVM, which also lost negation words to stop-word removal), and inherits VADER's biases,
-   shown by the learned features.
+   shown by the learned features. The controlled experiment in 1b (85% vs VADER, 51% vs humans,
+   67% when trained on human labels) quantifies the cost.
 4. Limitations: no human gold labels (or, once annotated, the real VADER-vs-human and
    DistilBERT-vs-human agreement), single seed, no per-language evaluation (until the verification
    run), possible duplicate leakage (until checked).

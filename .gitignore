@@ -132,3 +132,6 @@ dmypy.json
 
 # Verification-run checkpoints (results/ itself is kept)
 results/**/checkpoints/
+
+# Third-party dataset downloaded by paper_audit/hinglish_human_label_check.py
+paper_audit/external_data/
